@@ -39,6 +39,15 @@
 	<property name="hbm2ddl.auto">update</property>
 	<mapping resource="com/ilbcj/model/Admin.hbm.xml" />
 	<mapping resource="com/ilbcj/model/Config.hbm.xml" />
+	<mapping resource="com/ilbcj/model/AuditLog.hbm.xml" />
+	<mapping resource="com/ilbcj/model/AvoidUnit.hbm.xml" />
+	<mapping resource="com/ilbcj/model/Choose.hbm.xml" />
+	<mapping resource="com/ilbcj/model/Expert.hbm.xml" />
+	<mapping resource="com/ilbcj/model/ExpertMajorType.hbm.xml" />
+	<mapping resource="com/ilbcj/model/MajorType.hbm.xml" />
+	<mapping resource="com/ilbcj/model/Project.hbm.xml" />
+	<mapping resource="com/ilbcj/model/ProjectMajorType.hbm.xml" />
+	<mapping resource="com/ilbcj/model/Unit.hbm.xml" />
 
 </session-factory>
 

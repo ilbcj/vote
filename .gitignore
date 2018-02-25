@@ -19,7 +19,17 @@ hs_err_pid*
 .metadata/
 .myeclipse/
 WebRoot/WEB-INF/classes/
+workspace/vote/WebRoot/WEB-INF/classes/
 
 #test
 test.*
 _test.*
+
+#doc
+old_20160901/
+CC301SDK6.9/
+deploy/apache-tomcat*
+deploy/espeak*
+deploy/jdk-7*
+deploy/JTTSE*
+deploy/mysql

@@ -213,22 +213,22 @@ function _initILBCJ(o) {
             menu +=   '</span>';
             menu += '</a>';
             menu += '<ul class="treeview-menu">';
-            menu +=   '<li><a id="menu_player_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>专家信息</a></li>';
+            menu +=   '<li><a id="menu_expert_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>专家信息</a></li>';
             menu += '</ul>';
             menu += '</li>';
             
             menu += '<li class="treeview">';
-			menu += '<a href="javascript:void(0)"><i class="fa fa-gears"></i> <span>选取信息管理</span>';
+			menu += '<a href="javascript:void(0)"><i class="fa fa-gears"></i> <span>项目信息管理</span>';
             menu +=   '<span class="pull-right-container">';
             menu +=     '<i class="fa fa-angle-left pull-right"></i>';
             menu +=   '</span>';
             menu += '</a>';
             menu += '<ul class="treeview-menu">';
-            menu +=   '<li><a id="menu_season_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>选取信息</a></li>';
+            menu +=   '<li><a id="menu_project_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>项目信息</a></li>';
             menu += '</ul>';
             menu += '</li>';
             
-            menu += '<li class="treeview">';
+/*            menu += '<li class="treeview">';
 			menu += '<a href="javascript:void(0)"><i class="fa fa-gears"></i> <span>数据模板管理</span>';
             menu +=   '<span class="pull-right-container">';
             menu +=     '<i class="fa fa-angle-left pull-right"></i>';
@@ -238,19 +238,19 @@ function _initILBCJ(o) {
             menu +=   '<li><a id="menu_battle_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>模板信息</a></li>';
 //            menu +=   '<li><a id="menu_device_maintain" href="javascript:void(0)"><i class="fa fa-circle-o"/>对阵信息</a></li>';
             menu += '</ul>';
-            menu += '</li>';
+            menu += '</li>';*/
             
             $('#mm').html(menu);
     		
-    		$('#menu_player_maintain').on('click.ILBCJ.menu.data-api',function(e){
-    			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/player/player_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
-    					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.player.activate();});
+    		$('#menu_expert_maintain').on('click.ILBCJ.menu.data-api',function(e){
+    			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/expert/expert_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
+    					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.expert.activate();});
     		});
-    		$('#menu_season_maintain').on('click.ILBCJ.menu.data-api',function(e){
-    			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/period/season_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
-    					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.season.activate();});
+    		$('#menu_project_maintain').on('click.ILBCJ.menu.data-api',function(e){
+    			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/project/project_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
+    					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.project.activate();});
     		});
-    		$('#menu_round_maintain').on('click.ILBCJ.menu.data-api',function(e){
+/*    		$('#menu_round_maintain').on('click.ILBCJ.menu.data-api',function(e){
     			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/period/round_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
     					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.round.activate();});
     		});
@@ -265,7 +265,7 @@ function _initILBCJ(o) {
     		$('#menu_config_maintain').on('click.ILBCJ.menu.data-api',function(e){
     			o.basePath && $('div.content-wrapper').load(o.basePath + '/page/config/config_maintain.html?random=' + Math.random() + ' .content-wrapper-inner',
     					function(response,status,xhr){$.ILBCJ.checkLoad(response);$.ILBCJ.config.activate();});
-    		});
+    		});*/
     		
     		$('#change_pwd').on('click.ilbcj.changepwd.data-api',function(e){
     			$('#oldPwd').val('');
@@ -301,21 +301,21 @@ function _initILBCJ(o) {
 		}
 	};// end of $.ILBCJ.menu
 	
-	/* season
+	/* expert
 	* ======
-	* match season infomation maintain page
+	* expert infomation maintain page
 	*
 	* @type Object
-	* @usage $.ILBCJ.season.activate()
-	* @usage $.ILBCJ.season.addSeasonWindow()
-	* @usage $.ILBCJ.season.addSeasonConfirm()
-	* @usage $.ILBCJ.season.batchDelSeason()
-	* @usage $.ILBCJ.season.delSeason()
-	* @usage $.ILBCJ.season.delSeasonsConfirm()
+	* @usage $.ILBCJ.expert.activate()
+	* @usage $.ILBCJ.expert.addSeasonWindow()
+	* @usage $.ILBCJ.expert.addSeasonConfirm()
+	* @usage $.ILBCJ.expert.batchDelSeason()
+	* @usage $.ILBCJ.expert.delSeason()
+	* @usage $.ILBCJ.expert.delSeasonsConfirm()
 	*/
-	$.ILBCJ.season = {
+	$.ILBCJ.expert = {
 		activate: function () {
-			o.basePath && $('#season_main_table').DataTable( {
+			o.basePath && $('#expert_main_table').DataTable( {
 				ajax:{
 					url: o.basePath + '/period/querySeasons.action',
 					type: 'POST',

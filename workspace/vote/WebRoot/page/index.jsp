@@ -16,7 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ILBCJ | Index</title>
+  <title>DRAW | Index</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -61,9 +61,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Logo -->
     <a href="<%=path %>/page/index.jsp" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>T</b>emp</span>
+      <span class="logo-mini"><b>D</b>raw</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>XXX信息系统</b></span>
+      <span class="logo-lg"><b>评标专家抽签管理系统</b></span>
     </a>
 
     <!-- Header Navbar -->
@@ -168,14 +168,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		<div class="row text-center" style="line-height:550px">
 <!--       		<img src="../img/shield_genericapp.png" class="user-image" alt="User Image" /> -->
 <!-- 			<img src="../img/Stopwatch-128.png" class="user-image" alt="User Image" /> -->
-			<img src="../img/terran.jpg" class="user-image" alt="User Image" />
-			<img src="../img/protoss.jpg" class="user-image" alt="User Image" />
-			<img src="../img/zerg.jpg" class="user-image" alt="User Image" />
+			<img src="../img/index_logo_2.png" alt="User Image" />
 		</div>
 		
     	<div  class="row text-center" >
-    			<p class="lead">[XXXX]</p>
-				<p class="lead">[YYYY]</p>
+    			<h1>评标专家抽签管理</p>
+				<p class="lead">长春市水利局</p>
     	</div>
 		
     </section>
