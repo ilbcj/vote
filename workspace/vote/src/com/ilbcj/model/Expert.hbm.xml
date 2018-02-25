@@ -18,6 +18,8 @@
 		<property name="city" type="java.lang.String" length="64"/>
 		<property name="tel" type="java.lang.String" length="32"/>
 		<property name="admission" type="java.lang.String" length="32"/>
+		<property name="status" type="java.lang.Integer"/>
 		<property name="unitId" column="unit_id" type="java.lang.Integer"/>
+		
 	</class>
 </hibernate-mapping>

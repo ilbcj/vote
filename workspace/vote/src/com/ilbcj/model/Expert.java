@@ -1,6 +1,8 @@
 package com.ilbcj.model;
 
 public class Expert {
+	public static final int STATUS_USING = 1;
+	public final static int STATUS_DEL = 0;
 	private int id;
 	private String name;
 	private String gender;
@@ -10,7 +12,14 @@ public class Expert {
 	private String city;
 	private String tel;
 	private String admission;
+	private int status;
 	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public int getId() {
 		return id;
 	}
@@ -64,5 +73,16 @@ public class Expert {
 	}
 	public void setAdmission(String admission) {
 		this.admission = admission;
+	}
+	
+	
+	//non persistence attribute
+	private String unit;
+
+	public String getUnit() {
+		return unit;
+	}
+	public void setUnit(String unit) {
+		this.unit = unit;
 	}
 }

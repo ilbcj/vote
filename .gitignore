@@ -19,7 +19,9 @@ hs_err_pid*
 .metadata/
 .myeclipse/
 WebRoot/WEB-INF/classes/
+workspace/vote/WebRoot/WEB-INF/classes/hibernate.cfg.xml
 workspace/vote/WebRoot/WEB-INF/classes/
+
 
 #test
 test.*

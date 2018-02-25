@@ -317,7 +317,17 @@ function _initILBCJ(o) {
 		activate: function () {
 			o.basePath && $('#expert_main_table').DataTable( {
 				ajax:{
-					url: o.basePath + '/period/querySeasons.action',
+					url: o.basePath + '/expert/queryExperts.action',
+					data: function(d) {
+						var name = $('#expert_query_name').val();
+						var unitId = $('#expert_query_unit').val();
+						var city = $('#expert_query_city').val();
+				    	return $.extend( {}, d, {
+			    			name: name,
+			    			unitId: unitId,
+			    			city: city
+				    	});
+					},
 					type: 'POST',
 					dataSrc: 'items'
 				},
@@ -326,8 +336,11 @@ function _initILBCJ(o) {
 				columns: [
 					{ data: '' },
 					{ data: 'name' },
-					{ data: 'timestamp' },
-					{ data: 'memo' }
+					{ data: 'gender' },
+					{ data: 'idsn' },
+					{ data: 'tel' },
+					{ data: 'unit' },
+					{ data: 'city' }
 				],
 				rowId: 'id',
 				columnDefs: [
@@ -340,12 +353,12 @@ function _initILBCJ(o) {
 					{
 						render: function ( data, type, row ) {
 							var html = '<div class="btn-group">';
-							html += '<button class="season_info btn btn-xs btn-success" data-id="' + row.id + '"><i class="fa fa-edit"></i>详情</button>';
-							html += '<button class="season_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
+							html += '<button class="expert_info btn btn-xs btn-success" data-id="' + row.id + '"><i class="fa fa-edit"></i>详情</button>';
+							html += '<button class="expert_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
 							html += '</div>';
 							return html;
 						},
-						targets: 4
+						targets: 7
 					}
 				],
 				createdRow: function ( row, data, index ) {
@@ -354,16 +367,26 @@ function _initILBCJ(o) {
 			});
 			
 			//listen page items' event
-			$('#add_season').on('click.ILBCJ.season.add', $.ILBCJ.season.addSeasonWindow);
-			$('#season_detail_modal_confirm').on('click.ILBCJ.season.addconfirm', $.ILBCJ.season.saveSeasonConfirm);
-			$('#del_seasons').on('click.ILBCJ.season.delete.batch', $.ILBCJ.season.batchDelSeason);
+			$('#query_expert').on('click.ILBCJ.expert.query', $.ILBCJ.expert.queryExpert);
+			$('#query_expert_reset').on('click.ILBCJ.expert.query', $.ILBCJ.expert.clearQueryExpertCondition);
+			$('#add_expert').on('click.ILBCJ.expert.add', $.ILBCJ.expert.addExpertWindow);
+			$('#expert_detail_modal_confirm').on('click.ILBCJ.expert.addconfirm', $.ILBCJ.expert.saveExpertConfirm);
+			$('#del_experts').on('click.ILBCJ.expert.delete.batch', $.ILBCJ.expert.batchDelExpert);
 			$('#season_main_table').on( 'draw.dt', function () {
-				$('.season_info').on('click.ILBCJ.season.detail', $.ILBCJ.season.addSeasonWindow);
-				$('.season_del').on('click.ILBCJ.season.delete.single', $.ILBCJ.season.delSeason);
+				$('.expert_info').on('click.ILBCJ.expert.detail', $.ILBCJ.expert.addExpertWindow);
+				$('.expert_del').on('click.ILBCJ.expert.delete.single', $.ILBCJ.expert.delExpert);
 			});
-			$('#season_confirm_modal_confirm').on('click.ILBCJ.season.delconfirm', $.ILBCJ.season.delSeasonsConfirm);
+			$('#expert_confirm_modal_confirm').on('click.ILBCJ.expert.delconfirm', $.ILBCJ.expert.delExpertConfirm);
 		},
-		addSeasonWindow: function () {
+		queryExpert: function () {
+			o.basePath && $('#expert_main_table').DataTable().ajax.reload();
+		},
+		clearQueryExpertCondition: function () {
+			$('#expert_query_name').val('');
+			$('#expert_query_unit').val(0);
+			$('#expert_query_city').val('');
+		},
+		addExpertWindow: function () {
 			var id = $(this).data('id');
 			if( typeof id === 'undefined' ) {
 				$('#name').val('');
