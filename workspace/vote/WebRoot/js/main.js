@@ -336,7 +336,6 @@ function _initILBCJ(o) {
 				columns: [
 					{ data: '' },
 					{ data: 'name' },
-					{ data: 'gender' },
 					{ data: 'idsn' },
 					{ data: 'tel' },
 					{ data: 'unit' },
@@ -354,11 +353,11 @@ function _initILBCJ(o) {
 						render: function ( data, type, row ) {
 							var html = '<div class="btn-group">';
 							html += '<button class="expert_info btn btn-xs btn-success" data-id="' + row.id + '"><i class="fa fa-edit"></i>详情</button>';
-							html += '<button class="expert_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
+							//html += '<button class="expert_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
 							html += '</div>';
 							return html;
 						},
-						targets: 7
+						targets: 6
 					}
 				],
 				createdRow: function ( row, data, index ) {
@@ -369,14 +368,30 @@ function _initILBCJ(o) {
 			//listen page items' event
 			$('#query_expert').on('click.ILBCJ.expert.query', $.ILBCJ.expert.queryExpert);
 			$('#query_expert_reset').on('click.ILBCJ.expert.query', $.ILBCJ.expert.clearQueryExpertCondition);
-			$('#add_expert').on('click.ILBCJ.expert.add', $.ILBCJ.expert.addExpertWindow);
+			$('#add_expert').on('click.ILBCJ.expert.add', $.ILBCJ.expert.openExpertWindow);
 			$('#expert_detail_modal_confirm').on('click.ILBCJ.expert.addconfirm', $.ILBCJ.expert.saveExpertConfirm);
 			$('#del_experts').on('click.ILBCJ.expert.delete.batch', $.ILBCJ.expert.batchDelExpert);
-			$('#season_main_table').on( 'draw.dt', function () {
-				$('.expert_info').on('click.ILBCJ.expert.detail', $.ILBCJ.expert.addExpertWindow);
+			$('#expert_main_table').on( 'draw.dt', function () {
+				$('.expert_info').on('click.ILBCJ.expert.detail', $.ILBCJ.expert.openExpertWindow);
 				$('.expert_del').on('click.ILBCJ.expert.delete.single', $.ILBCJ.expert.delExpert);
 			});
+			$('#expert_info_modal_confirm').on('click.ILBCJ.expert.editexpertinfoconfirm', $.ILBCJ.expert.saveExpertConfirm);
 			$('#expert_confirm_modal_confirm').on('click.ILBCJ.expert.delconfirm', $.ILBCJ.expert.delExpertConfirm);
+			
+			o.basePath && $.post(o.basePath + '/unit/queryUnits.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
+	    		if(retObj.result == true)
+				{
+					var unitOptionStr = '';
+					retObj.units.forEach(function(unit, index){
+						unitOptionStr += '<option value=' + unit.id + '>' + unit.name + '</option>';
+					});
+					$('#expert_query_unit').append(unitOptionStr);
+					$('#expert_info_modal_unit').append(unitOptionStr);
+				} else {
+					var message = '加载单位信息失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
 		},
 		queryExpert: function () {
 			o.basePath && $('#expert_main_table').DataTable().ajax.reload();
@@ -386,82 +401,91 @@ function _initILBCJ(o) {
 			$('#expert_query_unit').val(0);
 			$('#expert_query_city').val('');
 		},
-		addExpertWindow: function () {
+		openExpertWindow: function () {
 			var id = $(this).data('id');
 			if( typeof id === 'undefined' ) {
 				$('#name').val('');
-		    	$('#timestamp').val('');
-		    	$('#memo').val('');
-		    	$('#season_detail_modal_confirm').data('season_id', 0);
+		    	$('#idsn').val('');
+		    	$('#tel').val('');
+		    	$('#city').val('');
+		    	$('#expert_info_modal_unit').val(0);
+		    	$('#expert_info_modal_confirm').data('expert_id', 0);
 			}
 			else {
-				var rowData = $('#season_main_table').DataTable().row( '#' + id ).data();
+				var rowData = $('#expert_main_table').DataTable().row( '#' + id ).data();
 				$('#name').val(rowData.name);
-		    	$('#timestamp').val(rowData.timestamp);
-		    	$('#memo').val(rowData.memo);
-				$('#season_detail_modal_confirm').data('season_id', id);
+		    	$('#idsn').val(rowData.idsn);
+		    	$('#tel').val(rowData.tel);
+		    	$('#city').val(rowData.city);
+		    	$('#expert_info_modal_unit').val(rowData.unitId);
+				$('#expert_info_modal_confirm').data('expert_id', id);
 			}
-			$('#season_detail_modal').modal('show');
+			$('#expert_info_modal').modal('show');
 		},
-		saveSeasonConfirm: function () {
-			var id = $('#season_detail_modal_confirm').data('season_id');
+		saveExpertConfirm: function () {
+			var id = $('#expert_info_modal_confirm').data('expert_id');
+			if(id === undefined) {
+				id = 0;
+			}
 			var name = $('#name').val();
-		    var time = $('#timestamp').val();
-		    var memo = $('#memo').val();
+		    var idsn = $('#isdn').val();
+		    var tel = $('#tel').val();
+		    var city = $('#city').val();
 		    
-			var postData = 'season.id=' + id;
-			postData += '&season.name=' + name;
-			postData += '&season.timestamp=' + time;
-			postData += '&season.memo=' + memo;
+			var postData = 'expert.id=' + id;
+			postData += '&expert.name=' + name;
+			postData += '&expert.idsn=' + idsn;
+			postData += '&expert.tel=' + tel;
+			postData += '&expert.city=' + city;
 	
-			o.basePath && $.post(o.basePath + '/period/saveSeason.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
+			o.basePath && $.post(o.basePath + '/expert/saveExpert.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
 	    		if(retObj.result == true)
 				{
-					o.basePath && $('#season_main_table').DataTable().ajax.reload();
-					var message = '保存赛季信息成功!';
+					o.basePath && $('#expert_main_table').DataTable().ajax.reload();
+					var message = '保存专家信息成功!';
 					$.ILBCJ.tipMessage(message);
 				} else {
-					var message = '保存赛季信息失败![' + retObj.message + ']';
+					var message = '保存专家信息失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, 'json');
 		},
-		batchDelSeason: function () {
-			if( ($('#season_main_table :checkbox:checked[data-id]').length == 0) ) { 
-				var message = "请选择要删除的赛季!";
+		batchDelExpert: function () {
+			if( ($('#expert_main_table :checkbox:checked[data-id]').length == 0) ) { 
+				var message = "请选择要删除的专家!";
 				$.ILBCJ.tipMessage(message);
 				return;
 			} else {
 				var delIds = '';
-				$("#season_main_table :checkbox").each(function(index,checkboxItem){
+				$("#expert_main_table :checkbox").each(function(index,checkboxItem){
 					if($(checkboxItem).prop('checked') && index != 0){
 						delIds += "delIds=" + $(checkboxItem).attr('data-id') + "&";
 					}
 				});
-				var message = '已经选取了' + $("#season_main_table :checkbox:checked[data-id]").length + '条记录。是否要删除这些赛季？';
-				$('#season_confirm_modal_message').empty().append(message);
-				$('#season_confirm_modal_confirm').data('delIds', delIds);
-				$("#season_confirm_modal").modal('show');
+				var message = '已经选取了' + $("#expert_main_table :checkbox:checked[data-id]").length + '条记录。是否要删除这些专家？';
+				$('#expert_confirm_modal_message').empty().append(message);
+				$('#expert_confirm_modal_confirm').data('delIds', delIds);
+				$("#expert_confirm_modal").modal('show');
 			}
 		},
-		delSeason: function () {
+		delExpert: function () {
 			var rowId = $(this).data('id');
 			var delIds = 'delIds=' + rowId;
-			var message = '是否要删除此赛季？';
-			$('#season_confirm_modal_message').empty().append(message);
-			$('#season_confirm_modal_confirm').data('delIds', delIds);
-			$("#season_confirm_modal").modal('show');
+			var message = '是否要删除此位专家？';
+			$('#expert_confirm_modal_message').empty().append(message);
+			$('#expert_confirm_modal_confirm').data('delIds', delIds);
+			$("#expert_confirm_modal").modal('show');
 		},
-		delSeasonsConfirm: function () {
+		delExpertsConfirm: function () {
 			var postData = '';
-			postData = $('#season_confirm_modal_confirm').data('delIds');
-			o.basePath && $.post(o.basePath + '/period/deleteSeasons.action', postData, function(retObj) {
+			postData = $('#expert_confirm_modal_confirm').data('delIds');
+			o.basePath && $.post(o.basePath + '/expert/deleteExperts.action', postData, function(retObj) {
 				if(retObj.result == true) {
-					var message = '赛季信息已删除';
+					var message = '专家信息已删除';
 					$.ILBCJ.tipMessage(message);
 					$('#season_main_table').DataTable().ajax.reload();
 				} else {
-					var message = '删除赛季信息操作失败![' + retObj.message + ']';
+					var message = '删除专家信息操作失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, 'json');

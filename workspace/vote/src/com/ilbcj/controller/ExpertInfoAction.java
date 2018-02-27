@@ -30,7 +30,7 @@ public class ExpertInfoAction extends ActionSupport {
 	private String city;
 	private List<Expert> items;
 	
-//	private Expert player;
+	private Expert expert;
 //	private List<Integer> delIds;
 //	
 //	private int id;
@@ -48,7 +48,6 @@ public class ExpertInfoAction extends ActionSupport {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-
 	public int getDraw() {
 		return draw;
 	}
@@ -79,7 +78,7 @@ public class ExpertInfoAction extends ActionSupport {
 	public void setLength(int length) {
 		this.length = length;
 	}
-		public String getName() {
+	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
@@ -103,6 +102,13 @@ public class ExpertInfoAction extends ActionSupport {
 	public void setItems(List<Expert> items) {
 		this.items = items;
 	}
+	public Expert getExpert() {
+		return expert;
+	}
+	public void setExpert(Expert expert) {
+		this.expert = expert;
+	}
+	
 	public String QueryExperts() {
 		try {
 			ExpertInfoService service = new ExpertInfoService();

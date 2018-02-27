@@ -8,5 +8,7 @@
 	<constant name="struts.i18n.encoding" value="UTF-8"/>
 	
  	<include file="struts-login.xml"/>
+ 	<include file="struts-major.xml"/>
+ 	<include file="struts-unit.xml"/>
  	<include file="struts-expert.xml"/>
 </struts>    

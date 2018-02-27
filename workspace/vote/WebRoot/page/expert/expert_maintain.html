@@ -25,27 +25,27 @@
       <!-- Your Page Content Here -->
       <div id="expert_maintain_center_main_wapper" class="box box-primary">
         <div class="box-header with-border">
-					<div id="expert_maintain_center_query" class="row">
-						<div class="col-xs-3">
-							<input id="expert_query_name" type="text" class="form-control" placeholder="请输入专家姓名" 
-								data-toggle="tooltip" data-original-title="请输入专家姓名" data-placement="top">
-						</div>
-						<div class="col-xs-3">
-							<select id="expert_query_unit" class="form-control" data-toggle="tooltip" data-original-title="请选择专家工作单位" data-placement="top">
-								<option value=0>请选择专家工作单位</option>
-		            <option value=1>四平市水政水资源管理办公室</option>
-		            <option value=2>吉林省宏远建设工程有限公司</option>
-		          </select>
-						</div>
-						<div class="col-xs-3">
-							<input id="expert_query_city" type="text" class="form-control" placeholder="请输入专家所在城市" 
-								data-toggle="tooltip" data-original-title="请输入专家所在城市" data-placement="top">
-						</div>
-						<div class="col-xs-3 text-right">
-							<button id="query_expert" class="btn btn-sm btn-primary "> 搜索</button>
-							<button id="query_expert_reset" class="btn btn-sm btn-primary "> 重置</button>
-						</div>
-					</div><!-- /.row --><!-- end of expert_maintain_center_query -->
+			<div id="expert_maintain_center_query" class="row">
+				<div class="col-xs-3">
+					<input id="expert_query_name" type="text" class="form-control" placeholder="请输入专家姓名" 
+						data-toggle="tooltip" data-original-title="请输入专家姓名" data-placement="top">
+				</div>
+				<div class="col-xs-3">
+					<select id="expert_query_unit" class="form-control" data-toggle="tooltip" data-original-title="请选择专家工作单位" data-placement="top">
+						<option value="0">请选择专家工作单位</option>
+<!--			            <option value=1>四平市水政水资源管理办公室</option>
+			            <option value=2>吉林省宏远建设工程有限公司</option>-->
+          			</select>
+				</div>
+				<div class="col-xs-3">
+					<input id="expert_query_city" type="text" class="form-control" placeholder="请输入专家所在城市" 
+						data-toggle="tooltip" data-original-title="请输入专家所在城市" data-placement="top">
+				</div>
+				<div class="col-xs-3 text-right">
+					<button id="query_expert" class="btn btn-sm btn-primary "> 搜索</button>
+					<button id="query_expert_reset" class="btn btn-sm btn-primary "> 重置</button>
+				</div>
+			</div><!-- /.row --><!-- end of expert_maintain_center_query -->
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -63,7 +63,6 @@
 									<input type="checkbox"/>
 								</th>
 								<th>姓名</th>
-								<th>性别</th>
 								<th>身份证号</th>
 								<th>电话</th>
 								<th>单位</th>
@@ -78,127 +77,121 @@
 		<!-- /#expert_maintain_center_main_wapper -->
 		
 		<!-- 模态框（Modal） -->
-		<div class="modal modal-info fade" id="add_modal" tabindex="-1">
-		   <div class="modal-dialog">
+		<div class="modal modal-default fade" id="expert_info_modal" data-backdrop='static' tabindex="-1">
+		   <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		         <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal">&times;</button>
-		            <h4 class="modal-title">添加专家</h4>
+		            <h4 class="modal-title">专家信息</h4>
 		         </div>
 		         <div class="modal-body">
 					<!-- form start -->
 					<form class="form-horizontal">
-		            	<div class="form-group">
-							<label for="loginid" class="col-sm-2 control-label">账号</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="loginid" placeholder="账号">
+						<div class="row">
+							<div class="col-xs-8">
+								<div class="form-group">
+									<label for="name" class="col-sm-2 control-label">姓名</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="name" placeholder="姓名">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="gender" class="col-sm-2 control-label">性别</label>
+									<div class="col-sm-9">
+										<select class="form-control" id="gender">
+											<option value="">请选择性别</option>
+						                    <option value="男">男</option>
+						                    <option value="女">女</option>
+						                </select>
+									</div>
+								</div>
+				                <div class="form-group">
+									<label for="idsn" class="col-sm-2 control-label">身份证号</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="idsn" placeholder="身份证号">
+									</div>
+								</div>
+				                <div class="form-group">
+									<label for="tel" class="col-sm-2 control-label">电话</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="tel" placeholder="电话">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="title" class="col-sm-2 control-label">职称</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="title" placeholder="职称">
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="city" class="col-sm-2 control-label">城市</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" id="city" placeholder="城市">
+									</div>
+								</div>
+				                <div class="form-group">
+									<label for="expert_info_modal_unit" class="col-sm-2 control-label">工作单位</label>
+									<div class="col-sm-9">
+										<select class="form-control" id="expert_info_modal_unit">
+											<option value="0">请选择单位</option>
+						                </select>
+									</div>
+								</div>
+								
+								
+							</div>
+							
+							<div class="col-xs-4">
+								<div class="form-group">
+									<div class="col-xs-12">
+										<label for="major_type" class="control-label">可评标类别</label>	
+									</div>
+								</div>
+									
+								<div class="form-group">
+									<div class="col-sm-12">
+										<input type="text" class="form-control" id="qq" placeholder="QQ">
+									</div>
+								</div>
+									
+								<div class="form-group">
+									<div class="col-sm-12">
+										<input type="text" class="form-control" id="wechat" placeholder="微信">
+									</div>
+								</div>
+								
+								
 							</div>
 						</div>
-		                <div class="form-group">
-							<label for="pwd" class="col-sm-2 control-label">口令</label>
-							<div class="col-sm-10">
-								<input type="password" class="form-control" id="pwd" placeholder="口令">
-							</div>
-						</div>
-		                <div class="form-group">
-							<label for="name" class="col-sm-2 control-label">姓名</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="name" placeholder="姓名">
-							</div>
-						</div>
-		                
-		                <div class="form-group">
-							<label for="race" class="col-sm-2 control-label">种族</label>
-							<div class="col-sm-10">
-								<select class="form-control" id="race">
-									<option value="">请选择种族</option>
-				                    <option value="T">人类</option>
-				                    <option value="P">星灵</option>
-				                    <option value="Z">异虫</option>
-				                </select>
-							</div>
-						</div>
+						<!-- /.row -->
 						
-						<div class="form-group">
-							<label for="telephone" class="col-sm-2 control-label">电话</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="telephone" placeholder="电话">
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label for="email" class="col-sm-2 control-label">邮箱</label>
-							<div class="col-sm-10">
-								<input type="email" class="form-control" id="email" placeholder="邮箱">
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label for="qq" class="col-sm-2 control-label">QQ</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="qq" placeholder="QQ">
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label for="wechat" class="col-sm-2 control-label">微信</label>
-							<div class="col-sm-10">
-								<input type="text" class="form-control" id="wechat" placeholder="微信">
-							</div>
-						</div>
 		            </form>
 		         </div>
 		         <!-- /.modal-body -->
 		         <div class="modal-footer">
-		            <button id="add_player_confirm" class="btn btn-sm btn-outline"  data-dismiss="modal">确定</button>
-		            <button class="btn btn-sm btn-outline" data-dismiss="modal">取消</button>
+		            <div class="row">
+						<div class="col-xs-4 col-xs-offset-2">
+							<button type="button" id="expert_info_modal_confirm" class="btn btn-block btn-primary" data-dismiss="modal">确定</button>
+						</div>
+						<div class="col-xs-4">
+							<button type="buton" class="btn btn-block btn-default" data-dismiss="modal">取消</button>
+						</div>
+					</div>
 		         </div>
 		      </div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
 		
-		<div class="modal modal-info fade" id="detail_modal" tabindex="-1">
-		   <div class="modal-dialog">
-		      <div class="modal-content">
-		         <div class="modal-header">
-		            <button type="button" class="close" data-dismiss="modal">&times;</button>
-		            <h4 class="modal-title">详细信息</h4>
-		         </div>
-		         <div class="modal-body" id="detail_message"></div>
-		         <div class="modal-footer">
-		            <button type="button" id="detail_expert_confirm" class="btn btn-sm btn-outline"  data-dismiss="modal">确定</button>
-		            <button type="button" class="btn btn-sm btn-outline" data-dismiss="modal">取消</button>
-		         </div>
-		      </div><!-- /.modal-content -->
-			</div><!-- /.modal -->
-		</div>
-		
-		<div class="modal modal-danger fade" id="test_Init_Player_Modal" tabindex="-1">
+		<div class="modal modal-danger fade" id="expert_confirm_modal" tabindex="-1">
 		   <div class="modal-dialog">
 		      <div class="modal-content">
 		         <div class="modal-header">
 		            <button type="button" class="close" data-dismiss="modal">&times;</button>
 		            <h4 class="modal-title">提示</h4>
 		         </div>
-		         <div class="modal-body" id="test_init_player_message"></div>
+		         <div class="modal-body" id="expert_confirm_modal_message"></div>
 		         <div class="modal-footer">
-		            <button type="button" id="test_init_player_confirm" class="btn btn-sm btn-outline"  data-dismiss="modal">确定</button>
-		            <button type="button" class="btn btn-sm btn-outline" data-dismiss="modal">取消</button>
-		         </div>
-		      </div><!-- /.modal-content -->
-			</div><!-- /.modal -->
-		</div>
-		
-		<div class="modal modal-danger fade" id="del_modal" tabindex="-1">
-		   <div class="modal-dialog">
-		      <div class="modal-content">
-		         <div class="modal-header">
-		            <button type="button" class="close" data-dismiss="modal">&times;</button>
-		            <h4 class="modal-title">提示</h4>
-		         </div>
-		         <div class="modal-body" id="del_message"></div>
-		         <div class="modal-footer">
-		            <button type="button" id="del_experts_confirm" class="btn btn-sm btn-outline"  data-dismiss="modal">确定</button>
+		            <button type="button" id="expert_confirm_modal_confirm" class="btn btn-sm btn-outline"  data-dismiss="modal">确定</button>
 		            <button type="button" class="btn btn-sm btn-outline" data-dismiss="modal">取消</button>
 		         </div>
 		      </div><!-- /.modal-content -->
