@@ -12,4 +12,5 @@ public interface MajorDAO {
 	
 	//ExpertMajorType
 	public ExpertMajorType AddExpertMajorType(ExpertMajorType emt) throws Exception;
+	public List<ExpertMajorType> GetExpertMajorTypeByExpertid(int id) throws Exception;		
 }

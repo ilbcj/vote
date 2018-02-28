@@ -18,9 +18,9 @@
 		<action name="queryExperts" class="com.ilbcj.controller.ExpertInfoAction" method="QueryExperts" >
  			<result name="success" type="json" />
 		</action>
-<!-- 		<action name="savePlayer" class="com.achilles.controller.PlayerInfoAction" method="SavePlayer" > -->
-<!--  			<result name="success" type="json" /> -->
-<!-- 		</action> -->
+ 		<action name="queryExpertMajorTypes" class="com.ilbcj.controller.ExpertInfoAction" method="QueryExpertMajorTypes" >
+  			<result name="success" type="json" />
+ 		</action>
 <!-- 		<action name="deletePlayer" class="com.achilles.controller.PlayerInfoAction" method="DeletePlayer" > -->
 <!--  			<result name="success" type="json" /> -->
 <!-- 		</action> -->

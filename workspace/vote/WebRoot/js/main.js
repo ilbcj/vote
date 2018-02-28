@@ -392,6 +392,12 @@ function _initILBCJ(o) {
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, 'json');
+			
+			$('[id^=major]').iCheck({
+			    checkboxClass: 'icheckbox_square-blue margin',
+				radioClass: 'iradio_square-blue margin'
+			    //increaseArea: '20%' // optional
+			});
 		},
 		queryExpert: function () {
 			o.basePath && $('#expert_main_table').DataTable().ajax.reload();
@@ -403,6 +409,7 @@ function _initILBCJ(o) {
 		},
 		openExpertWindow: function () {
 			var id = $(this).data('id');
+			$('[id^=major]').iCheck('uncheck');
 			if( typeof id === 'undefined' ) {
 				$('#name').val('');
 		    	$('#idsn').val('');
@@ -410,6 +417,7 @@ function _initILBCJ(o) {
 		    	$('#city').val('');
 		    	$('#expert_info_modal_unit').val(0);
 		    	$('#expert_info_modal_confirm').data('expert_id', 0);
+		    	$('#expert_info_modal').modal('show');
 			}
 			else {
 				var rowData = $('#expert_main_table').DataTable().row( '#' + id ).data();
@@ -417,10 +425,24 @@ function _initILBCJ(o) {
 		    	$('#idsn').val(rowData.idsn);
 		    	$('#tel').val(rowData.tel);
 		    	$('#city').val(rowData.city);
+		    	$('#admission').val(rowData.admission);
 		    	$('#expert_info_modal_unit').val(rowData.unitId);
 				$('#expert_info_modal_confirm').data('expert_id', id);
+				
+				o.basePath && $.post(o.basePath + '/expert/queryExpertMajorTypes.action?rand=' + Math.random(), {expertId:id}, function(retObj,textStatus, jqXHR) {
+		    		if(retObj.result == true)
+					{
+						var unitOptionStr = '';
+						retObj.emts.forEach(function(emt, index){
+							$('#major'+ emt.majorId).iCheck('check');
+						});
+					} else {
+						var message = '加载专家可评标类别信息失败![' + retObj.message + ']';
+						$.ILBCJ.tipMessage(message, false);
+					}
+					$('#expert_info_modal').modal('show');
+				}, 'json');
 			}
-			$('#expert_info_modal').modal('show');
 		},
 		saveExpertConfirm: function () {
 			var id = $('#expert_info_modal_confirm').data('expert_id');

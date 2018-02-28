@@ -5,7 +5,9 @@ import java.util.List;
 
 //import com.ilbcj.dto.PlayerDetail;
 import com.ilbcj.model.Expert;
+import com.ilbcj.model.ExpertMajorType;
 import com.ilbcj.service.ExpertInfoService;
+import com.ilbcj.service.MajorInfoService;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ExpertInfoAction extends ActionSupport {
@@ -30,6 +32,8 @@ public class ExpertInfoAction extends ActionSupport {
 	private String city;
 	private List<Expert> items;
 	
+	private int expertId;
+	private List<ExpertMajorType> emts;
 	private Expert expert;
 //	private List<Integer> delIds;
 //	
@@ -38,6 +42,18 @@ public class ExpertInfoAction extends ActionSupport {
 	
 	public boolean isResult() {
 		return result;
+	}
+	public List<ExpertMajorType> getEmts() {
+		return emts;
+	}
+	public void setEmts(List<ExpertMajorType> emts) {
+		this.emts = emts;
+	}
+	public int getExpertId() {
+		return expertId;
+	}
+	public void setExpertId(int expertId) {
+		this.expertId = expertId;
 	}
 	public void setResult(boolean result) {
 		this.result = result;
@@ -116,6 +132,19 @@ public class ExpertInfoAction extends ActionSupport {
 			recordsTotal = service.QueryPlayer( name, unitId, city, start, length, items );
 			recordsFiltered = recordsTotal;
 			draw = draw + 1;
+		} catch (Exception e) {
+			message = e.getMessage();
+			setResult(false);
+			return SUCCESS;
+		}
+		setResult(true);
+		return SUCCESS;
+	}
+	
+	public String QueryExpertMajorTypes() {
+		try {
+			MajorInfoService service = new MajorInfoService();
+			emts = service.QueryExpertMajorTypeByExpertid(expertId);
 		} catch (Exception e) {
 			message = e.getMessage();
 			setResult(false);

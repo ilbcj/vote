@@ -62,4 +62,29 @@ public class MajorDAOImpl implements MajorDAO {
 		return emt;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExpertMajorType> GetExpertMajorTypeByExpertid(int id)
+			throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		List<ExpertMajorType> rs = null;
+		String sqlString = "SELECT * FROM expert_major_type where expert_id = :expert_id ";
+		
+		try {
+			Query q = session.createSQLQuery(sqlString).addEntity(ExpertMajorType.class);
+			q.setInteger("expert_id", id);
+			rs = q.list();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return rs;
+	}
+
 }

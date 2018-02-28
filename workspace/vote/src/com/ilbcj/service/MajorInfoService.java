@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ilbcj.dao.MajorDAO;
 import com.ilbcj.dao.impl.MajorDAOImpl;
+import com.ilbcj.model.ExpertMajorType;
 import com.ilbcj.model.MajorType;
 
 public class MajorInfoService {
@@ -14,4 +15,9 @@ public class MajorInfoService {
 		return majors;
 	}
 	
+	public List<ExpertMajorType> QueryExpertMajorTypeByExpertid(int id) throws Exception {
+		MajorDAO dao = new MajorDAOImpl();
+		List<ExpertMajorType> emts = dao.GetExpertMajorTypeByExpertid(id);
+		return emts;
+	}
 }
