@@ -29,9 +29,9 @@
 		<action name="saveProjectMemo" class="com.ilbcj.controller.ProjectInfoAction" method="SaveProjectMemo" >
  			<result name="success" type="json" />
 		</action>
-<!-- 		<action name="deletePlayer" class="com.ilbcj.controller.ProjectInfoAction" method="DeletePlayer" > -->
-<!--  			<result name="success" type="json" /> -->
-<!-- 		</action> -->
+ 		<action name="deleteProjects" class="com.ilbcj.controller.ProjectInfoAction" method="DeleteProjects" >
+ 			<result name="success" type="json" />
+		</action>
 <!-- 		<action name="queryPlayerDetail" class="com.ilbcj.controller.ProjectInfoAction" method="QueryPlayerDetail" > -->
 <!--  			<result name="success" type="json" /> -->
 <!-- 		</action> -->

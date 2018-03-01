@@ -232,21 +232,21 @@ public class ProjectInfoAction extends ActionSupport {
 	}
 	
 	
-//	public String DeletePlayer() {
-//		try {
-//			if(delIds == null) 
-//				throw new Exception("没有指定要删除的选手。");
-//			PlayerInfoService service = new PlayerInfoService();
-//			service.DeletePlayers(delIds);
-//		} catch (Exception e) {
-//			message = e.getMessage();
-//			setResult(false);
-//			return SUCCESS;
-//		}
-//		setResult(true);
-//		return SUCCESS;
-//	}
-//	
+	public String DeleteProjects() {
+		try {
+			if(delIds == null) 
+				throw new Exception("没有指定要删除的项目。");
+			ProjectInfoService service = new ProjectInfoService();
+			service.DeleteProjects(delIds);
+		} catch (Exception e) {
+			message = e.getMessage();
+			setResult(false);
+			return SUCCESS;
+		}
+		setResult(true);
+		return SUCCESS;
+	}
+	
 //	public String QueryPlayerDetail() {
 //		try {
 //			PlayerInfoService service = new PlayerInfoService();

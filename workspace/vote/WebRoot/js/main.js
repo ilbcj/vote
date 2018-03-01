@@ -603,7 +603,9 @@ function _initILBCJ(o) {
 				$('.project_memo').on('click.ILBCJ.project.delete.single', $.ILBCJ.project.showProjectMemo);
 			});
 			$('#project_memo_modal_confirm').on('click.ILBCJ.project.memoconfirm', $.ILBCJ.project.memoProjectConfirm);
-			$('#project_confirm_modal_confirm').on('click.ILBCJ.project.delconfirm', $.ILBCJ.project.delProjectConfirm);
+			$('#project_confirm_modal_confirm').on('click.ILBCJ.project.delconfirm', $.ILBCJ.project.projectConfirmModalConfirm);
+			
+			$('#project_condition').on('click.ILBCJ.project.condition', $.ILBCJ.project.openProjectConditionPanel);
 			
 			o.basePath && $.post(o.basePath + '/unit/queryUnits.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
 	    		if(retObj.result == true)
@@ -800,6 +802,10 @@ function _initILBCJ(o) {
 					$(checkboxItem).iCheck('uncheck');
 				});
 			}, 'json');
+		},
+		openProjectConditionPanel: function () {
+			$('#project_maintain_center_main_wapper').addClass('hidden');
+			$('#project_condition_main_wapper').removeClass('hidden');
 		}
 		/*,
 		archiveRound: function () {

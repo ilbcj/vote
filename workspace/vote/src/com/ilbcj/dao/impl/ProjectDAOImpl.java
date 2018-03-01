@@ -166,4 +166,28 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return project;
 	}
 
+	@Override
+	public void DelProject(Project target) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		String sqlString = "DELETE FROM Project WHERE id=:id ";
+		int rs = 0;
+		
+		try {
+			Query q = session.createQuery(sqlString);
+			q.setInteger("id", target.getId());
+			rs = q.executeUpdate();
+			System.out.println("delete " + rs + "recored from project");
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return;
+	}
+
 }

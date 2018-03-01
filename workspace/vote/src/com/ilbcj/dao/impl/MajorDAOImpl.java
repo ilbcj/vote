@@ -138,4 +138,28 @@ public class MajorDAOImpl implements MajorDAO {
 		return rs;
 	}
 
+	@Override
+	public void DeleteProjectMajorTypeByProjectid(int id) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		int rs = 0;
+		String sqlString = "DELETE FROM ProjectMajorType where project_id = :project_id ";
+		
+		try {
+			Query q = session.createQuery(sqlString);
+			q.setInteger("project_id", id);
+			rs = q.executeUpdate();
+			System.out.println("delete " + rs + " records from project_major_type");
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return;
+	}
+
 }

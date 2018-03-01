@@ -17,5 +17,6 @@ public interface MajorDAO {
 
 	//ProjectMajorType
 	public ProjectMajorType AddProjectMajorType(ProjectMajorType pmt) throws Exception;
-	public List<ProjectMajorType> GetProjectMajorTypeByProjectid(int id) throws Exception;		
+	public List<ProjectMajorType> GetProjectMajorTypeByProjectid(int id) throws Exception;
+	public void DeleteProjectMajorTypeByProjectid(int id) throws Exception;
 }

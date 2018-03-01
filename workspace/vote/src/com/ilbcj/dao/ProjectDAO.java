@@ -9,5 +9,6 @@ public interface ProjectDAO {
 	public Project AddProject(Project expert) throws Exception;
 	public List<Project> GetProjects(Project criteria, int start, int length) throws Exception;
 	public long QueryProjectsCount(Project criteria)throws Exception;
-	public Project GetProjectById(int id) throws Exception;	
+	public Project GetProjectById(int id) throws Exception;
+	public void DelProject(Project target) throws Exception;
 }
