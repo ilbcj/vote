@@ -512,25 +512,33 @@ function _initILBCJ(o) {
 				}
 			}, 'json');
 		}
-	};// end of $.ILBCJ.season
+	};// end of $.ILBCJ.expert
 	
-	/* round
+	/* project
 	* ======
-	* match round infomation maintain page
+	* project infomation maintain page
 	*
 	* @type Object
-	* @usage $.ILBCJ.round.activate()
-	* @usage $.ILBCJ.round.addRoundWindow()
-	* @usage $.ILBCJ.round.addRoundConfirm()
-	* @usage $.ILBCJ.round.batchDelRound()
-	* @usage $.ILBCJ.round.delRound()
-	* @usage $.ILBCJ.round.delRoundsConfirm()
+	* @usage $.ILBCJ.project.activate()
+	* @usage $.ILBCJ.project.addRoundWindow()
+	* @usage $.ILBCJ.project.addRoundConfirm()
+	* @usage $.ILBCJ.project.batchDelRound()
+	* @usage $.ILBCJ.project.delRound()
+	* @usage $.ILBCJ.project.delRoundsConfirm()
 	*/
-	$.ILBCJ.round = {
+	$.ILBCJ.project = {
 		activate: function () {
-			o.basePath && $('#round_main_table').DataTable( {
+			o.basePath && $('#project_main_table').DataTable( {
 				ajax:{
-					url: o.basePath + '/period/queryRounds.action',
+					url: o.basePath + '/project/queryProjects.action',
+					data: function(d) {
+						var name = $('#project_query_name').val();
+						var sn = $('#project_query_sn').val();
+						return $.extend( {}, d, {
+			    			name: name,
+			    			sn: sn
+				    	});
+					},
 					type: 'POST',
 					dataSrc: 'items'
 				},
@@ -538,11 +546,12 @@ function _initILBCJ(o) {
 				serverSide: true,
 				columns: [
 					{ data: '' },
+					{ data: 'sn' },
 					{ data: 'name' },
-					{ data: 'timestamp' },
-					{ data: 'seasonName' },
 					{ data: 'status' },
-					{ data: 'memo' }
+					{ data: 'bidAddress' },
+					{ data: 'bidTime' },
+					{ data: 'chooseTime' }
 				],
 				rowId: 'id',
 				columnDefs: [
@@ -555,37 +564,26 @@ function _initILBCJ(o) {
 					{
 						render: function ( data, type, row ) {
 							var text = '';
-							if(data == 0) {
-								text = '已删除场次';
-							}
-							else if(data == 1) {
-								text = '活动中';
+							if(data == 1) {
+								text = '新建';
 							}
 							else if(data == 2) {
-								text = '上一轮';
-							}
-							else if(data == 3) {
-								text = '历史场次';
-							}
-							if(data == 9) {
-								text = '初始场次';
+								text = '抽签';
 							}
 							return text;
 						},
-						targets: 4
+						targets: 3
 					},
 					{
 						render: function ( data, type, row ) {
 							var html = '<div class="btn-group">';
-							html += '<button class="round_info btn btn-xs btn-success" data-id="' + row.id + '"><i class="fa fa-edit"></i>详情</button>';
-							html += '<button class="round_del btn btn-xs btn-danger hidden" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
-							if(row.status == 1) {
-								html += '<button class="round_archive btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>归档</button>';	
-							}
+							html += '<button class="project_info btn btn-xs btn-success" data-id="' + row.id + '"><i class="fa fa-edit"></i>详情</button>';
+							html += '<button class="project_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
+							html += '<button class="project_memo btn btn-xs btn-warning" data-id="' + row.id + '"><i class="fa fa-book"></i>备注</button>';
 							html += '</div>';
 							return html;
 						},
-						targets: 6
+						targets: 7
 					}
 				],
 				createdRow: function ( row, data, index ) {
@@ -594,161 +592,216 @@ function _initILBCJ(o) {
 			});
 			
 			//listen page items' event
-			$('#add_round').on('click.ILBCJ.round.add', $.ILBCJ.round.addRoundWindow);
-			$('#round_detail_modal_confirm').on('click.ILBCJ.round.addconfirm', $.ILBCJ.round.saveRoundConfirm);
-			$('#del_rounds').on('click.ILBCJ.round.delete.batch', $.ILBCJ.round.batchDelRound);
-			$('#round_main_table').on( 'draw.dt', function () {
-				$('.round_info').on('click.ILBCJ.round.detail', $.ILBCJ.round.addRoundWindow);
-				$('.round_del').on('click.ILBCJ.round.delete.single', $.ILBCJ.round.delRound);
-				$('.round_archive').on('click.ILBCJ.round.archive', $.ILBCJ.round.archiveRound);
+			//$('#query_project').on('click.ILBCJ.project.query', $.ILBCJ.project.queryExpert);
+			//$('#query_project_reset').on('click.ILBCJ.project.query', $.ILBCJ.project.clearQueryExpertCondition);
+			$('#add_project').on('click.ILBCJ.project.add', $.ILBCJ.project.openProjectWindow);
+			$('#project_info_modal_confirm').on('click.ILBCJ.project.editprojectinfoconfirm', $.ILBCJ.project.saveProjectConfirm);
+			$('#del_projects').on('click.ILBCJ.project.delete.batch', $.ILBCJ.project.batchDelProject);
+			$('#project_main_table').on( 'draw.dt', function () {
+				$('.project_info').on('click.ILBCJ.project.detail', $.ILBCJ.project.openProjectWindow);
+				$('.project_del').on('click.ILBCJ.project.delete.single', $.ILBCJ.project.delProject);
+				$('.project_memo').on('click.ILBCJ.project.delete.single', $.ILBCJ.project.showProjectMemo);
 			});
-			$('#round_confirm_modal_confirm').on('click.ILBCJ.round.delconfirm', $.ILBCJ.round.roundConfirmModalConfirm);
-		},
-		addRoundWindow: function () {
-			var id = $(this).data('id');
-			o.basePath && $.post(o.basePath + '/period/querySeasons.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
-				if(retObj.result == true)
-				{
-					$('#season option').remove();
-					$('#season').append('<option value="">请选择一个所属赛季</option>');
-					retObj.items.forEach(function(season){
-						$('#season').append('<option value="' + season.id + '">' + season.name + '</option>');
-					});
-					if( typeof id === 'undefined' ) {
-						$('#name').val('');
-				    	$('#timestamp').val('');
-				    	$('#memo').val('');
-				    	$('#status').val('');
-				    	$("#status").data('status', '');
-				    	$('#season').val('');
-				    	$('#last_round').val('');
-				    	$('#last_round').data('last_round_id', '');
-				    	$('#round_detail_modal_confirm').data('round_id', 0);
-					}
-					else {
-						var rowData = $('#round_main_table').DataTable().row( '#' + id ).data();
-						$('#name').val(rowData.name);
-				    	$('#timestamp').val(rowData.timestamp);
-				    	$('#memo').val(rowData.memo);
-				    	var statusText = '';
-				    	if(rowData.status == 0) {
-				    		statusText = '已删除场次';
-				    	}
-				    	else if(rowData.status == 1) {
-				    		statusText = '当前场次';
-				    	}
-				    	else if(rowData.status == 2) {
-				    		statusText = '上一场次';
-				    	}
-				    	else if(rowData.status == 3) {
-				    		statusText = '历史场次';
-				    	}
-				    	else if(rowData.status == 9) {
-				    		statusText = '初始场次';
-				    	}
-				    	$("#status").val(statusText);
-				    	$("#status").data('status', rowData.status);
-				    	$("#season").val(rowData.seasonId);
-				    	$('#last_round').val(rowData.lastRoundName);
-				    	$('#last_round').data('last_round_id', rowData.lastRoundId);
-						$('#round_detail_modal_confirm').data('round_id', id);
-					}
-					$('#round_detail_modal').modal('show');
-				} else {
-					var message = '获取赛季信息失败![' + retObj.message + ']';
-					$.ILBCJ.tipMessage(message, false);
-				}
-			}, 'json');
-		},
-		saveRoundConfirm: function () {
-			var id = $('#round_detail_modal_confirm').data('round_id');
-			var name = $('#name').val();
-		    var time = $('#timestamp').val();
-		    var memo = $('#memo').val();
-		    var status = $('#status').data('status');
-		    var season = $('#season').val();
-		    var lastRoundId = $('#last_round').data('last_round_id');
-		    
-			var postData = 'round.id=' + id;
-			postData += '&round.name=' + name;
-			postData += '&round.timestamp=' + time;
-			postData += '&round.memo=' + memo;
-			postData += '&round.status=' + status;
-			postData += '&round.seasonId=' + season;
-			postData += '&round.lastPeriodId=' + lastRoundId;
-	
-			o.basePath && $.post(o.basePath + '/period/saveRound.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
+			$('#project_memo_modal_confirm').on('click.ILBCJ.project.memoconfirm', $.ILBCJ.project.memoProjectConfirm);
+			$('#project_confirm_modal_confirm').on('click.ILBCJ.project.delconfirm', $.ILBCJ.project.delProjectConfirm);
+			
+			o.basePath && $.post(o.basePath + '/unit/queryUnits.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
 	    		if(retObj.result == true)
 				{
-					o.basePath && $('#round_main_table').DataTable().ajax.reload();
-					var message = '保存场次信息成功!';
+					var unitOptionStr = '';
+					retObj.units.forEach(function(unit, index){
+						unitOptionStr += '<option value=' + unit.id + '>' + unit.name + '</option>';
+					});
+					$('#project_info_modal_unit').append(unitOptionStr);
+				} else {
+					var message = '加载单位信息失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
+			
+			$('[id^=major]').iCheck({
+			    checkboxClass: 'icheckbox_square-blue margin',
+				radioClass: 'iradio_square-blue margin'
+			    //increaseArea: '20%' // optional
+			});
+		},
+		showProjectMemo: function() {
+			var id = $(this).data('id');
+			if( typeof id === 'undefined' ) {
+				return;
+			}
+			
+			var rowData = $('#project_main_table').DataTable().row( '#' + id ).data();
+			$('#project_memo_modal_name').html(rowData.name);
+			$('#memo').val(rowData.memo);
+	    	$('#project_memo_modal_confirm').data('project_id', id);
+		
+			$('#project_memo_modal').modal('show');
+		},
+		memoProjectConfirm: function() {
+			var id = $('#project_memo_modal_confirm').data('project_id');
+			var memo = $('#memo').val();
+		    
+			var postData = 'project.id=' + id;
+			postData += '&project.memo=' + memo;
+			
+			o.basePath && $.post(o.basePath + '/project/saveProjectMemo.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
+	    		if(retObj.result == true)
+				{
+					o.basePath && $('#project_main_table').DataTable().ajax.reload();
+					var message = '保存项目备注成功!';
 					$.ILBCJ.tipMessage(message);
 				} else {
-					var message = '保存场次信息失败![' + retObj.message + ']';
+					var message = '保存项目备注失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, 'json');
 		},
-		roundConfirmModalConfirm: function () {
-			// 1 -- delRoundsConfirm()
-			// 2 -- archiveRoundConfirm()
-			var type = $('#round_confirm_modal_confirm').data('type');
+		openProjectWindow: function () {
+			var id = $(this).data('id');
+			//$('[id^=major]').iCheck('uncheck');
+			if( typeof id === 'undefined' ) {
+				$('#name').val('');
+		    	$('#bid_address').val('铂鑫宾馆五楼会议室');
+		    	$('#gathering_address').val('铂鑫宾馆五楼会议室，临河街与卫星路交汇处，临河街6177号');
+		    	$('#bid_unit').val('');
+		    	$('#supervise_unit').val('');
+		    	$('#proxy_org').val('');
+		    	$('#expert_count').val('');
+		    	$('#sn').val('');
+		    	$('#bid_time').val('');
+		    	$('#choose_user').val('');
+		    	$('#supervise_user').val('');
+		    	$('#staff').val('');
+		    	$('#operator').val('');
+		    	$('#choose_time').val('');
+		    	$('#project_info_modal_confirm').data('project_id', 0);
+			}
+			else {
+				var rowData = $('#project_main_table').DataTable().row( '#' + id ).data();
+				$('#name').val(rowData.name);
+		    	$('#bid_address').val(rowData.bidAddress);
+		    	$('#gathering_address').val(rowData.gatheringAddress);
+		    	$('#bid_unit').val(rowData.bidUnit);
+		    	$('#supervise_unit').val(rowData.superviseUnit);
+		    	$('#proxy_org').val(rowData.proxyOrg);
+		    	$('#expert_count').val(rowData.expertCount);
+		    	$('#sn').val(rowData.sn);
+		    	$('#bid_time').val(rowData.bidTime);
+		    	$('#choose_user').val(rowData.chooseUser);
+		    	$('#supervise_user').val(rowData.superviseUser);
+		    	$('#staff').val(rowData.staff);
+		    	$('#operator').val(rowData.operator);
+		    	$('#choose_time').val(rowData.chooseTime);
+		    	$('#project_info_modal_confirm').data('project_id', id);
+			}
+			$('#project_info_modal').modal('show');
+		},
+		saveProjectConfirm: function () {
+			var id = $('#project_info_modal_confirm').data('project_id');
+			var name = $('#name').val();
+		    var bidAddress = $('#bid_address').val();
+		    var gatheringAddress = $('#gathering_address').val();
+		    var bidUnit = $('#bid_unit').val();
+		    var superviseUnit = $('#supervise_unit').val();
+		    var proxyOrg = $('#proxy_org').val();
+		    var expertCount = $('#expert_count').val();
+		    var sn = $('#sn').val();
+		    var bidTime = $('#bid_time').val();
+		    var chooseUser = $('#choose_user').val();
+		    var superviseUser = $('#supervise_user').val();
+		    var staff = $('#staff').val();
+		    var operator = $('#operator').val();
+		    var chooseTime = $('#choose_time').val();
+		    
+			var postData = 'project.id=' + id;
+			postData += '&project.name=' + name;
+			postData += '&project.bidAddress=' + bidAddress;
+			postData += '&project.gatheringAddress=' + gatheringAddress;
+			postData += '&project.bidUnit=' + bidUnit;
+			postData += '&project.superviseUnit=' + superviseUnit;
+			postData += '&project.proxyOrg=' + proxyOrg;
+			postData += '&project.expertCount=' + expertCount;
+			postData += '&project.sn=' + sn;
+			postData += '&project.bidTime=' + bidTime;
+			postData += '&project.chooseUser=' + chooseUser;
+			postData += '&project.superviseUser=' + superviseUser;
+			postData += '&project.staff=' + staff;
+			postData += '&project.operator=' + operator;
+			postData += '&project.chooseTime=' + chooseTime;
+	
+			o.basePath && $.post(o.basePath + '/project/saveProject.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
+	    		if(retObj.result == true)
+				{
+					o.basePath && $('#project_main_table').DataTable().ajax.reload();
+					var message = '保存项目信息成功!';
+					$.ILBCJ.tipMessage(message);
+				} else {
+					var message = '保存项目信息失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
+		},
+		projectConfirmModalConfirm: function () {
+			// 1 -- delProjectsConfirm()
+			var type = $('#project_confirm_modal_confirm').data('type');
 			if(type === 1) {
 				var postData = '';
-				postData = $('#round_confirm_modal_confirm').data('delIds');
-				$.ILBCJ.round.delRoundsConfirm(postData);
+				postData = $('#project_confirm_modal_confirm').data('delIds');
+				$.ILBCJ.project.delProjectsConfirm(postData);
 			}
 			else if(type === 2) {
-				var roundId = $('#round_confirm_modal_confirm').data('round_id');
-				$.ILBCJ.round.archiveRoundConfirm(roundId);
+				/*var roundId = $('#round_confirm_modal_confirm').data('round_id');
+				$.ILBCJ.round.archiveRoundConfirm(roundId);*/
 			}
 			else {
 				$.ILBCJ.tipMessage("没有找到合适的处理流程，请联系系统维护人员!", false);
 			}
 		},
-		batchDelRound: function () {
-			if( ($('#round_main_table :checkbox:checked[data-id]').length == 0) ) { 
-				var message = "请选择要删除的场次!";
+		batchDelProject: function () {
+			if( ($('#project_main_table :checkbox:checked[data-id]').length == 0) ) { 
+				var message = "请选择要删除的项目!";
 				$.ILBCJ.tipMessage(message);
 				return;
 			} else {
 				var delIds = '';
-				$("#round_main_table :checkbox").each(function(index,checkboxItem){
+				$("#project_main_table :checkbox").each(function(index,checkboxItem){
 					if($(checkboxItem).prop('checked') && index != 0){
 						delIds += "delIds=" + $(checkboxItem).attr('data-id') + "&";
 					}
 				});
-				var message = '已经选取了' + $("#round_main_table :checkbox:checked[data-id]").length + '条记录。是否要删除这些场次？';
-				$('#round_confirm_modal_message').empty().append(message);
-				$('#round_confirm_modal_confirm').data('type', 1);
-				$('#round_confirm_modal_confirm').data('delIds', delIds);
-				$("#round_confirm_modal").modal('show');
+				var message = '已经选取了' + $("#project_main_table :checkbox:checked[data-id]").length + '条记录。是否要删除这些项目？';
+				$('#project_confirm_modal_message').empty().append(message);
+				$('#project_confirm_modal_confirm').data('type', 1);
+				$('#project_confirm_modal_confirm').data('delIds', delIds);
+				$("#project_confirm_modal").modal('show');
 			}
 		},
-		delRound: function () {
+		delProject: function () {
 			var rowId = $(this).data('id');
 			var delIds = 'delIds=' + rowId;
-			var message = '是否要删除此场次？';
-			$('#round_confirm_modal_message').empty().append(message);
-			$('#round_confirm_modal_confirm').data('type', 1);
-			$('#round_confirm_modal_confirm').data('delIds', delIds);
-			$("#round_confirm_modal").modal('show');
+			var message = '是否要删除此项目？';
+			$('#project_confirm_modal_message').empty().append(message);
+			$('#project_confirm_modal_confirm').data('type', 1);
+			$('#project_confirm_modal_confirm').data('delIds', delIds);
+			$("#project_confirm_modal").modal('show');
 		},
-		delRoundsConfirm: function (postData) {
-			o.basePath && $.post(o.basePath + '/period/deleteRounds.action', postData, function(retObj) {
+		delProjectsConfirm: function (postData) {
+			o.basePath && $.post(o.basePath + '/project/deleteProjects.action', postData, function(retObj) {
 				if(retObj.result == true) {
-					var message = '场次信息已删除';
+					var message = '项目信息已删除';
 					$.ILBCJ.tipMessage(message);
-					$('#round_main_table').DataTable().ajax.reload();
+					$('#project_main_table').DataTable().ajax.reload();
 				} else {
-					var message = '删除场次信息操作失败![' + retObj.message + ']';
+					var message = '删除项目信息操作失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
 				}
-				$("#round_main_table :checkbox").each(function(index,checkboxItem){
+				$("#project_main_table :checkbox").each(function(index,checkboxItem){
 					$(checkboxItem).iCheck('uncheck');
 				});
 			}, 'json');
-		},
+		}
+		/*,
 		archiveRound: function () {
 			var rowId = $(this).data('id');
 			var message = '执行归档操作后，不可再改变本轮比赛的所有对战结果，是否继续归档？';
@@ -771,8 +824,8 @@ function _initILBCJ(o) {
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, "json");
-		}
-	};// end of $.ILBCJ.round
+		}*/
+	};// end of $.ILBCJ.project
 	
 	/* player
 	* ======

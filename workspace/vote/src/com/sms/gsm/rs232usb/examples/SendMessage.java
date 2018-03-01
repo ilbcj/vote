@@ -27,7 +27,7 @@ public class SendMessage
 		System.out.println("Version: " + Library.getLibraryVersion());
 		srv = new Service();
 		
-		SerialModemGateway gateway = new SerialModemGateway("modem.com5", "COM5", 9600, "SIMENES", "17254");
+		SerialModemGateway gateway = new SerialModemGateway("modem.com4", "COM4", 19200, "SIMENES", "17254");
 		gateway.setInbound(true);
 		gateway.setOutbound(true);
 		gateway.setSimPin("0000");
@@ -44,7 +44,7 @@ public class SendMessage
 		System.out.println();
 		// Send a message synchronously.
 		
-		msg = new OutboundMessage("10478968754", "评标通知：舒征，请您于2016年04月20日14时30分到长春市政府集合参加评标，如能准时参加回复1，本短信在100分钟内回复有效。");
+		msg = new OutboundMessage("13488789644", "评标通知：舒征，请您于2016年04月20日14时30分到长春市政府集合参加评标，如能准时参加回复1，本短信在100分钟内回复有效。");
 		msg.setEncoding(MessageEncodings.ENCUCS2);
 		boolean test = srv.sendMessage(msg);
 		System.out.println("boolean:" + test);

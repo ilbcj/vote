@@ -51,7 +51,7 @@ public class ReadMessages
 			// to you.
 			this.srv = new Service();
 			// Create the Gateway representing the serial GSM modem.
-			SerialModemGateway gateway = new SerialModemGateway("modem.com5", "COM5", 9600, "SIMENES", "17254");
+			SerialModemGateway gateway = new SerialModemGateway("modem.com4", "COM4", 19200, "SIMENES", "17254");
 			// Do we want the Gateway to be used for Inbound messages? If not,
 			// SMSLib will never read messages from this Gateway.
 			gateway.setInbound(true);

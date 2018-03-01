@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<package name="projectInfo" extends="json-default" namespace="/project">
+		
+		<global-results>
+ 			<result name="sqlException">/jsp/exception.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping exception="java.sql.SQLException" result="sqlException" />
+			<exception-mapping exception="java.lang.Exception" result="sqlException" />	
+		</global-exception-mappings>
+	
+	<!-- 
+		//查询项目信息				method="queryDeviceInfo"
+		//查询项目专业信息			method="queryProjectMajorTypes"
+		//保存项目信息				method="saveProject"
+		//保存项目备注				method="saveProjectMemo"
+	 -->
+		<action name="queryProjects" class="com.ilbcj.controller.ProjectInfoAction" method="QueryProjects" >
+ 			<result name="success" type="json" />
+		</action>
+ 		<action name="queryProjectMajorTypes" class="com.ilbcj.controller.ProjectInfoAction" method="QueryProjectMajorTypes" >
+  			<result name="success" type="json" />
+ 		</action>
+ 		<action name="saveProject" class="com.ilbcj.controller.ProjectInfoAction" method="SaveProject" >
+ 			<result name="success" type="json" />
+		</action>
+		<action name="saveProjectMemo" class="com.ilbcj.controller.ProjectInfoAction" method="SaveProjectMemo" >
+ 			<result name="success" type="json" />
+		</action>
+<!-- 		<action name="deletePlayer" class="com.ilbcj.controller.ProjectInfoAction" method="DeletePlayer" > -->
+<!--  			<result name="success" type="json" /> -->
+<!-- 		</action> -->
+<!-- 		<action name="queryPlayerDetail" class="com.ilbcj.controller.ProjectInfoAction" method="QueryPlayerDetail" > -->
+<!--  			<result name="success" type="json" /> -->
+<!-- 		</action> -->
+	</package>	
+</struts>    

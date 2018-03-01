@@ -1,6 +1,9 @@
 package com.ilbcj.model;
 
 public class Project {
+	public static final int STATUS_NEW = 1;
+	public static final int STATUS_DRAWN = 2;
+	
 	private int id;
 	private String name;
 	private String sn;

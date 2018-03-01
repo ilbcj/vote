@@ -10,6 +10,7 @@ import com.ilbcj.dao.MajorDAO;
 import com.ilbcj.model.ExpertMajorType;
 import com.ilbcj.model.HibernateUtil;
 import com.ilbcj.model.MajorType;
+import com.ilbcj.model.ProjectMajorType;
 
 public class MajorDAOImpl implements MajorDAO {
 
@@ -74,6 +75,56 @@ public class MajorDAOImpl implements MajorDAO {
 		try {
 			Query q = session.createSQLQuery(sqlString).addEntity(ExpertMajorType.class);
 			q.setInteger("expert_id", id);
+			rs = q.list();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return rs;
+	}
+
+	@Override
+	public ProjectMajorType AddProjectMajorType(ProjectMajorType pmt)
+			throws Exception {
+		//打开线程安全的session对象
+		Session session = HibernateUtil.currentSession();
+		//打开事务
+		Transaction tx = session.beginTransaction();
+		try
+		{
+			pmt = (ProjectMajorType)session.merge(pmt);
+			tx.commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		}
+		finally
+		{
+			HibernateUtil.closeSession();
+		}
+		return pmt;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProjectMajorType> GetProjectMajorTypeByProjectid(int id) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		List<ProjectMajorType> rs = null;
+		String sqlString = "SELECT * FROM project_major_type where project_id = :project_id ";
+		
+		try {
+			Query q = session.createSQLQuery(sqlString).addEntity(ProjectMajorType.class);
+			q.setInteger("project_id", id);
 			rs = q.list();
 			tx.commit();
 		} catch (Exception e) {

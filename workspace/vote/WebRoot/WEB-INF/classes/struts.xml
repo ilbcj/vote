@@ -11,4 +11,5 @@
  	<include file="struts-major.xml"/>
  	<include file="struts-unit.xml"/>
  	<include file="struts-expert.xml"/>
+ 	<include file="struts-project.xml"/>
 </struts>    
