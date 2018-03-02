@@ -2,8 +2,9 @@ package com.ilbcj.model;
 
 public class AvoidUnit {
 	private int id;
-	private int projectId;
+	private String reason;
 	private int unitId;
+	private String unitName;
 	
 	public int getId() {
 		return id;
@@ -11,16 +12,22 @@ public class AvoidUnit {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getProjectId() {
-		return projectId;
+	public String getReason() {
+		return reason;
 	}
-	public void setProjectId(int projectId) {
-		this.projectId = projectId;
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	public int getUnitId() {
 		return unitId;
 	}
 	public void setUnitId(int unitId) {
 		this.unitId = unitId;
+	}
+	public String getUnitName() {
+		return unitName;
+	}
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
 	}
 }

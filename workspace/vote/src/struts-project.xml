@@ -32,8 +32,8 @@
  		<action name="deleteProjects" class="com.ilbcj.controller.ProjectInfoAction" method="DeleteProjects" >
  			<result name="success" type="json" />
 		</action>
-<!-- 		<action name="queryPlayerDetail" class="com.ilbcj.controller.ProjectInfoAction" method="QueryPlayerDetail" > -->
-<!--  			<result name="success" type="json" /> -->
-<!-- 		</action> -->
+		<action name="queryAvoidUnits" class="com.ilbcj.controller.ProjectInfoAction" method="QueryAvoidUnits" >
+ 			<result name="success" type="json" />
+		</action>
 	</package>	
 </struts>    

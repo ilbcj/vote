@@ -528,6 +528,7 @@ function _initILBCJ(o) {
 	*/
 	$.ILBCJ.project = {
 		activate: function () {
+			//project_maintain_center_main_wapper
 			o.basePath && $('#project_main_table').DataTable( {
 				ajax:{
 					url: o.basePath + '/project/queryProjects.action',
@@ -606,6 +607,41 @@ function _initILBCJ(o) {
 			$('#project_confirm_modal_confirm').on('click.ILBCJ.project.delconfirm', $.ILBCJ.project.projectConfirmModalConfirm);
 			
 			$('#project_condition').on('click.ILBCJ.project.condition', $.ILBCJ.project.openProjectConditionPanel);
+			$('#project_condition_confirm_return').on('click.ILBCJ.project.condition.return', $.ILBCJ.project.openProjectMainPanel);
+			
+			//project_condition_main_wapper
+			o.basePath && $('#avoid_unit_table').DataTable( {
+				ajax:{
+					url: o.basePath + '/avoid/queryAvoidUnits.action',
+					type: 'POST',
+					dataSrc: 'aus'
+				},
+				processing: true,
+				serverSide: true,
+				columns: [
+					{ data: 'unitName' },
+					{ data: 'reason' }
+				],
+				rowId: 'id',
+				columnDefs: [
+					{
+						render: function ( data, type, row ) {
+							var html = '<div class="btn-group">';
+							html += '<button class="avoid_unit_del btn btn-xs btn-danger" data-id="' + row.id + '"><i class="fa fa-trash-o"></i>删除</button>';
+							html += '</div>';
+							return html;
+						},
+						targets: 2
+					}
+				]
+			});
+			
+			$('#add_avoid_unit').on('click.ILBCJ.project.avoidunit.add', $.ILBCJ.project.openAvoidUnitWindow);
+			$('#avoid_unit_modal_confirm').on('click.ILBCJ.project.editavoidunitconfirm', $.ILBCJ.project.saveAvoidUnitConfirm);
+			$('#project_condition_confirm').on('click.ILBCJ.project.editconditionconfirm', $.ILBCJ.project.saveProjectCondition);
+			$('#avoid_unit_table').on( 'draw.dt', function () {
+				$('.avoid_unit_del').on('click.ILBCJ.project.avoidunit.delete.single', $.ILBCJ.project.delAvoidUnit);
+			});
 			
 			o.basePath && $.post(o.basePath + '/unit/queryUnits.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
 	    		if(retObj.result == true)
@@ -614,7 +650,7 @@ function _initILBCJ(o) {
 					retObj.units.forEach(function(unit, index){
 						unitOptionStr += '<option value=' + unit.id + '>' + unit.name + '</option>';
 					});
-					$('#project_info_modal_unit').append(unitOptionStr);
+					$('#avoid_unit').append(unitOptionStr);
 				} else {
 					var message = '加载单位信息失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
@@ -626,6 +662,24 @@ function _initILBCJ(o) {
 				radioClass: 'iradio_square-blue margin'
 			    //increaseArea: '20%' // optional
 			});
+			
+			o.basePath && $.post(o.basePath + '/config/queryProjectMajorTypes.action?rand=' + Math.random(), {}, function(retObj,textStatus, jqXHR) {
+	    		if(retObj.result == true)
+				{
+					if(retObj.pmts != null) {
+						var pmts = retObj.pmts.split(',');
+						pmts.forEach(function(pmt, index){
+							if(pmt.trim() != '') {
+								$('#major'+ pmt).iCheck('check');
+							}
+						});
+					}
+				} else {
+					var message = '加载工程类别信息失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
+			
 		},
 		showProjectMemo: function() {
 			var id = $(this).data('id');
@@ -806,16 +860,69 @@ function _initILBCJ(o) {
 		openProjectConditionPanel: function () {
 			$('#project_maintain_center_main_wapper').addClass('hidden');
 			$('#project_condition_main_wapper').removeClass('hidden');
+		},
+		openProjectMainPanel: function() {
+			$('#project_condition_main_wapper').addClass('hidden');
+			$('#project_maintain_center_main_wapper').removeClass('hidden');
+		},
+		delAvoidUnit: function() {
+			var id = $(this).data('id');
+			var postData = 'avoidId=' + id;
+			o.basePath && $.post(o.basePath + "/avoid/delAvoidUnit.action", postData, function(retObj) {
+				if(retObj.result == true) {
+					o.basePath && $('#avoid_unit_table').DataTable().ajax.reload();
+				} else {
+					var message = "删除回避单位操作失败![" + retObj.message + "]";
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, "json");
+		},
+		openAvoidUnitWindow: function() {
+			$('#avoid_unit').val('0');
+			$('#avoid_reason').val('0');
+			$('#avoid_unit_modal').modal('show');
+		},
+		saveAvoidUnitConfirm: function() {
+			var unitId = $('#avoid_unit').val();
+			var unitName = $('#avoid_unit').find("option:selected").text();
+			var reason = $('#avoid_reason').val();
+			
+			var postData = 'au.unitId=' + unitId;
+			postData += '&au.unitName=' + unitName;
+			postData += '&au.reason=' + reason;
+			o.basePath && $.post(o.basePath + "/avoid/saveAvoidUnit.action", postData, function(retObj) {
+				if(retObj.result == true) {
+					o.basePath && $('#avoid_unit_table').DataTable().ajax.reload();
+				} else {
+					var message = "删除回避单位操作失败![" + retObj.message + "]";
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, "json");
+		},
+		saveProjectCondition: function() {
+			var pmts= [];
+			$('[id^=major]').each(function(index, major){
+				var self = $(this);
+				if(self.prop('checked')) {
+					var majorId = self.val();
+					pmts.push(majorId);
+				}
+			});
+			
+			var postData = "pmts=" + pmts.toString();
+			o.basePath && $.post(o.basePath + '/config/saveProjectMajorTypes.action?rand=' + Math.random(), postData, function(retObj,textStatus, jqXHR) {
+	    		if(retObj.result == true)
+				{
+					var message = '设置抽签条件成功!';
+					$.ILBCJ.tipMessage(message);
+					$.ILBCJ.project.openProjectMainPanel();
+				} else {
+					var message = '设置抽签条件失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
 		}
 		/*,
-		archiveRound: function () {
-			var rowId = $(this).data('id');
-			var message = '执行归档操作后，不可再改变本轮比赛的所有对战结果，是否继续归档？';
-			$('#round_confirm_modal_message').empty().append(message);
-			$('#round_confirm_modal_confirm').data('type', 2);
-			$('#round_confirm_modal_confirm').data('round_id', rowId);
-			$("#round_confirm_modal").modal('show');
-		},
 		archiveRoundConfirm: function (roundId) {
 			$("#progress_Modal").modal('show');
 			var postData = 'roundId=' + roundId;

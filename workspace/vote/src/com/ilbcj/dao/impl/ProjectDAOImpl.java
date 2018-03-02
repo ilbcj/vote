@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.ilbcj.dao.ProjectDAO;
+import com.ilbcj.model.AvoidUnit;
 import com.ilbcj.model.Project;
 import com.ilbcj.model.HibernateUtil;
 
@@ -178,6 +179,127 @@ public class ProjectDAOImpl implements ProjectDAO {
 			q.setInteger("id", target.getId());
 			rs = q.executeUpdate();
 			System.out.println("delete " + rs + "recored from project");
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<AvoidUnit> GetAvoidUnits(int start, int length) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		List<AvoidUnit> rs = null;
+		String sqlString = "SELECT * FROM avoid_unit ";
+		
+		try {
+			Query q = session.createSQLQuery(sqlString).addEntity(AvoidUnit.class);
+			if( start > 0 || length >0 ) {
+				q.setFirstResult(start);
+				q.setMaxResults(length);
+			}
+			rs = q.list();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return rs;
+	}
+
+	@Override
+	public long QueryAvoidUnitCount() throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		Long rs;
+		String sqlString = "SELECT COUNT(*) FROM AvoidUnit ";
+		
+		try {
+			Query q = session.createQuery(sqlString);
+			rs = (Long)q.uniqueResult();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return rs;
+	}
+
+	@Override
+	public AvoidUnit AddAvoidUnit(AvoidUnit au) throws Exception {
+		//打开线程安全的session对象
+		Session session = HibernateUtil.currentSession();
+		//打开事务
+		Transaction tx = session.beginTransaction();
+		try
+		{
+			au = (AvoidUnit)session.merge(au);
+			tx.commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		}
+		finally
+		{
+			HibernateUtil.closeSession();
+		}
+		return au;
+	}
+
+	@Override
+	public AvoidUnit GetAvoidUnitByUnitid(int unitId) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		AvoidUnit rs = null;
+		String sqlString = "SELECT * FROM avoid_unit WHERE unit_id=:unit_id ";
+		
+		try {
+			Query q = session.createSQLQuery(sqlString).addEntity(AvoidUnit.class);
+			q.setInteger("unit_id", unitId);
+			rs = (AvoidUnit)q.uniqueResult();
+			tx.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			tx.rollback();
+			System.out.println(e.getMessage());
+			throw e;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+		return rs;
+	}
+
+	@Override
+	public void DelAvoidUnit(AvoidUnit target) throws Exception {
+		Session session = HibernateUtil.currentSession();
+		Transaction tx = session.beginTransaction();
+		String sqlString = "DELETE FROM AvoidUnit WHERE id=:id ";
+		int rs = 0;
+		
+		try {
+			Query q = session.createQuery(sqlString);
+			q.setInteger("id", target.getId());
+			rs = q.executeUpdate();
+			System.out.println("delete " + rs + " recored from avoid_unit");
 			tx.commit();
 		} catch (Exception e) {
 			e.printStackTrace();

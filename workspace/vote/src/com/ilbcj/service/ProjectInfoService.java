@@ -10,6 +10,7 @@ import com.ilbcj.dao.UnitDAO;
 import com.ilbcj.dao.impl.MajorDAOImpl;
 import com.ilbcj.dao.impl.ProjectDAOImpl;
 import com.ilbcj.dao.impl.UnitDAOImpl;
+import com.ilbcj.model.AvoidUnit;
 import com.ilbcj.model.Project;
 import com.ilbcj.model.Unit;
 import com.ilbcj.util.DateTimeUtil;
@@ -23,14 +24,14 @@ public class ProjectInfoService {
 		List<Project> tmp = dao.GetProjects(criteria, start, length);
 		projects.addAll(tmp);
 		
-		convertExpertData(projects);
+		convertProjectData(projects);
 		
 		long count = 0;
 		count = dao.QueryProjectsCount(criteria);
 		return count;
 	}
 	
-	private void convertExpertData(List<Project> projects) throws Exception {
+	private void convertProjectData(List<Project> projects) throws Exception {
 //		UnitDAO udao = new UnitDAOImpl();
 //		List<Unit> units = udao.GetAllUnits();
 //		Map<Integer, Unit> unitMap = new HashMap<Integer, Unit>();
@@ -101,6 +102,34 @@ public class ProjectInfoService {
 			target.setId(id);
 			pdao.DelProject(target);
 		}
+		return;
+	}
+
+	public long QueryAvoidUnits(int start, int length, List<AvoidUnit> aus) throws Exception {
+		ProjectDAO dao = new ProjectDAOImpl();
+		List<AvoidUnit> tmp = dao.GetAvoidUnits(start, length);
+		aus.addAll(tmp);
+		
+		long count = 0;
+		count = dao.QueryAvoidUnitCount();
+		return count;
+	}
+
+	public void SaveAvoidUnit(AvoidUnit au) throws Exception {
+		ProjectDAO dao = new ProjectDAOImpl();
+		AvoidUnit tmp = dao.GetAvoidUnitByUnitid(au.getUnitId());
+		if(tmp == null) {
+			dao.AddAvoidUnit(au);
+		}
+		return;
+	}
+
+	public void DelAvoidUnitById(int avoidId) throws Exception {
+		ProjectDAO dao = new ProjectDAOImpl();
+		AvoidUnit target = new AvoidUnit();
+		target.setId(avoidId);
+		dao.DelAvoidUnit(target);
+		
 		return;
 	}
 }

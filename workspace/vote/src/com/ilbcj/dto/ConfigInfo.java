@@ -5,6 +5,7 @@ public class ConfigInfo implements Cloneable {
 	public static final int SYSTEM_STATUS_USE = 1;
 	
 	private int systemStatus;// = 5;
+	private String projectMajorTypes;
 	
 	public ConfigInfo() {
 		
@@ -12,8 +13,17 @@ public class ConfigInfo implements Cloneable {
 	
 	public ConfigInfo(ConfigInfo ci) {
 		this.systemStatus = ci.getSystemStatus();
+		this.projectMajorTypes = ci.getProjectMajorTypes();
 	}
 	
+	public String getProjectMajorTypes() {
+		return projectMajorTypes;
+	}
+
+	public void setProjectMajorTypes(String projectMajorTypes) {
+		this.projectMajorTypes = projectMajorTypes;
+	}
+
 	public int getSystemStatus() {
 		return systemStatus;
 	}

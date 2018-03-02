@@ -2,6 +2,7 @@ package com.ilbcj.model;
 
 public class Config {
 	public final static String NAME_SYSTEMSTATUS = "SystemStatus";//5
+	public final static String NAME_PROJECTMAJORTYPES = "ProjectMajorTypes";
 	
 	private int id;
 	private String name;

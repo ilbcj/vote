@@ -12,4 +12,6 @@
  	<include file="struts-unit.xml"/>
  	<include file="struts-expert.xml"/>
  	<include file="struts-project.xml"/>
+ 	<include file="struts-avoidunit.xml"/>
+ 	<include file="struts-config.xml"/>
 </struts>    

@@ -11,7 +11,8 @@
 			<generator class="identity"/>
 		</id>
 		<!-- property元素定义常规属性 -->
-		<property name="projectId" column="project_id" type="java.lang.Integer"/>
 		<property name="unitId" column="unit_id" type="java.lang.Integer"/>
+		<property name="reason" column="reason" type="java.lang.String" length="128"/>
+		<property name="unitName" column="unit_name" type="java.lang.String" length="64"/>
 	</class>
 </hibernate-mapping>

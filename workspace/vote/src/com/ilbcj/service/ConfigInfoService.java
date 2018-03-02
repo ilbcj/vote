@@ -38,6 +38,11 @@ public class ConfigInfoService {
 			info.setSystemStatus(item.getIval());
 		}
 		
+		item = itemsMap.get(Config.NAME_PROJECTMAJORTYPES);
+		if(item != null) {
+			info.setProjectMajorTypes(item.getSval());
+		}
+		
 		return info;
 	}
 
@@ -55,9 +60,27 @@ public class ConfigInfoService {
 		configItem = new Config();
 		configItem.setName(Config.NAME_SYSTEMSTATUS);
 		configItem.setIval(config.getSystemStatus());
+		
+		configItem = new Config();
+		configItem.setName(Config.NAME_PROJECTMAJORTYPES);
+		configItem.setSval(config.getProjectMajorTypes());
+		
 		dao.SaveConfigItem(configItem);
 		
 		ConfigUtil.UpdateConfig(config);
+	}
+
+	public String QueryProjectMajorTypes() throws Exception {
+		ConfigInfo ci = QuerySystemConfigInfo();
+		String pmts = ci.getProjectMajorTypes();
+		return pmts;
+	}
+	
+	public void SaveProjectMajorTypes(String pmts) throws Exception {
+		ConfigInfo ci = QuerySystemConfigInfo();
+		ci.setProjectMajorTypes(pmts);
+		SaveSystemConfigInfo(ci);
+		return;
 	}
 
 }

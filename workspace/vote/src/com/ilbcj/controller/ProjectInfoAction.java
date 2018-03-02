@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //import com.ilbcj.dto.PlayerDetail;
+import com.ilbcj.model.AvoidUnit;
 import com.ilbcj.model.Project;
 import com.ilbcj.model.ProjectMajorType;
 import com.ilbcj.service.ProjectInfoService;
@@ -36,9 +37,19 @@ public class ProjectInfoAction extends ActionSupport {
 	private Project project;
 	private List<Integer> delIds;
 	
+	private List<AvoidUnit> aus;
+	
 //	private int id;
 //	private ExpertDetail detail;
 	
+	public List<AvoidUnit> getAus() {
+		return aus;
+	}
+
+	public void setAus(List<AvoidUnit> aus) {
+		this.aus = aus;
+	}
+
 	public boolean isResult() {
 		return result;
 	}
@@ -247,19 +258,22 @@ public class ProjectInfoAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-//	public String QueryPlayerDetail() {
-//		try {
-//			PlayerInfoService service = new PlayerInfoService();
-//			detail = service.QueryPlayerDetailInfo(id);
-//		} catch (Exception e) {
-//			message = e.getMessage();
-//			setResult(false);
-//			return SUCCESS;
-//		}
-//		setResult(true);
-//		return SUCCESS;
-//	}
-//	
+	public String QueryAvoidUnits() {
+		try {
+			ProjectInfoService service = new ProjectInfoService();
+			aus = new ArrayList<AvoidUnit>();
+			recordsTotal = service.QueryAvoidUnits( start, length, aus );
+			recordsFiltered = recordsTotal;
+			draw = draw + 1;
+		} catch (Exception e) {
+			message = e.getMessage();
+			setResult(false);
+			return SUCCESS;
+		}
+		setResult(true);
+		return SUCCESS;
+	}
+	
 //	public String TestInitPlayers() {
 //		try {
 //			PlayerInfoService service = new PlayerInfoService();
