@@ -1,19 +1,12 @@
 package com.ilbcj.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import com.ilbcj.dao.MajorDAO;
 import com.ilbcj.dao.ProjectDAO;
-import com.ilbcj.dao.UnitDAO;
 import com.ilbcj.dao.impl.MajorDAOImpl;
 import com.ilbcj.dao.impl.ProjectDAOImpl;
-import com.ilbcj.dao.impl.UnitDAOImpl;
 import com.ilbcj.model.AvoidUnit;
 import com.ilbcj.model.Project;
-import com.ilbcj.model.Unit;
-import com.ilbcj.util.DateTimeUtil;
 
 public class ProjectInfoService {
 	public long QueryProject(String name, String sn, int start, int length, List<Project> projects) throws Exception {
@@ -49,7 +42,6 @@ public class ProjectInfoService {
 
 	public void SaveProject(Project project) throws Exception {
 		ProjectDAO dao = new ProjectDAOImpl();
-		
 		
 		Project criteria = new Project();
 		criteria.setName(project.getName());
@@ -104,6 +96,12 @@ public class ProjectInfoService {
 		}
 		return;
 	}
+	
+	public Project QueryProjectById(int pid) throws Exception {
+		ProjectDAO dao = new ProjectDAOImpl();
+		Project project = dao.GetProjectById(pid);
+		return project;
+	}
 
 	public long QueryAvoidUnits(int start, int length, List<AvoidUnit> aus) throws Exception {
 		ProjectDAO dao = new ProjectDAOImpl();
@@ -130,6 +128,14 @@ public class ProjectInfoService {
 		target.setId(avoidId);
 		dao.DelAvoidUnit(target);
 		
+		return;
+	}
+
+	public void UpdateProjectStatus(int id, int status) throws Exception {
+		ProjectDAO dao = new ProjectDAOImpl();
+		Project project = dao.GetProjectById(id);
+		project.setStatus(status);
+		dao.AddProject(project);
 		return;
 	}
 }

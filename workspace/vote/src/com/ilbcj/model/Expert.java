@@ -13,7 +13,14 @@ public class Expert {
 	private String tel;
 	private String admission;
 	private int status;
+	private int score;
 	
+	public int getScore() {
+		return score;
+	}
+	public void setScore(int score) {
+		this.score = score;
+	}
 	public int getStatus() {
 		return status;
 	}

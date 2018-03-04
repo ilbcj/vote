@@ -558,7 +558,7 @@ function _initILBCJ(o) {
 				columnDefs: [
 					{
 						render: function ( data, type, row ) {
-							return '<input type="checkbox" data-id="' + row.id + '" />';
+							return '<input type="checkbox" class="project_table_checkbox" data-id="' + row.id + '" />';
 						},
 						targets: 0
 					},
@@ -608,6 +608,10 @@ function _initILBCJ(o) {
 			
 			$('#project_condition').on('click.ILBCJ.project.condition', $.ILBCJ.project.openProjectConditionPanel);
 			$('#project_condition_confirm_return').on('click.ILBCJ.project.condition.return', $.ILBCJ.project.openProjectMainPanel);
+			$('#draw_expert').on('click.ILBCJ.project.draw', $.ILBCJ.project.openDrawExpertWindow);
+			$('#draw_expert_confirm').on('click.ILBCJ.project.drawexpert', $.ILBCJ.project.drawExpertConfirm);
+			$('#close_draw_modal').on('click.ILBCJ.project.closedraw', $.ILBCJ.project.closeDrawExpertWindow);
+			
 			
 			//project_condition_main_wapper
 			o.basePath && $('#avoid_unit_table').DataTable( {
@@ -918,6 +922,65 @@ function _initILBCJ(o) {
 					$.ILBCJ.project.openProjectMainPanel();
 				} else {
 					var message = '设置抽签条件失败![' + retObj.message + ']';
+					$.ILBCJ.tipMessage(message, false);
+				}
+			}, 'json');
+		},
+		openDrawExpertWindow: function() {
+			var count = $('#project_main_table :checkbox:checked[data-id]').length;
+			if( count != 1){ 
+				var message = "请选择一个要抽取专家的项目!";
+				$.ILBCJ.tipMessage(message);
+				return;
+			} else {
+				var id = $($('#project_main_table :checkbox:checked[data-id]').get(0)).data('id');
+				$('#draw_expert_confirm').data('projectId', id);
+				var rowData = $('#project_main_table').DataTable().row( '#' + id ).data();
+				$('#draw_project_name').val(rowData.name);
+				$('#draw_project_sn').val(rowData.sn);
+				$('#draw_expert_count').val(rowData.expertCount);
+				$('#draw_expert_log').html('');
+				$('#draw_modal').modal('show');
+				return;
+			}
+		},
+		closeDrawExpertWindow: function() {
+			$('.project_table_checkbox').iCheck('uncheck');
+			$('#draw_expert_log').addClass('hidden');
+			o.basePath && $('#project_main_table').DataTable().ajax.reload();
+			$('#draw_modal').modal('hide');
+			return;
+		},
+		drawExpertConfirm: function() {
+			$("#progress_Modal").modal('show');
+			$('#draw_expert_log').removeClass('hidden');
+			var id = $('#draw_expert_confirm').data('projectId');
+			var rowData = $('#project_main_table').DataTable().row( '#' + id ).data();
+			$('#draw_expert_log').append('准备抽取专家...\n');
+			$.ILBCJ.project.recursionDraw(id, rowData.expertCount);
+			return;
+		},
+		recursionDraw: function(pid, count) {
+			o.basePath && $.post(o.basePath + '/draw/drawExpert.action', {projectId: pid}, function(retObj) {
+				if(retObj.result == true) {
+					$('#draw_expert_log').append(retObj.message + '\n');
+					if( parseInt(retObj.remain) > 0 ) {
+						$('#draw_expert_log').append('开始抽取第' + (parseInt(count) - parseInt(retObj.remain) + 1) + '位专家...\n');
+						$('#draw_expert_log').scrollTop(1000);
+						$.ILBCJ.project.recursionDraw(pid, count);
+					}
+					else {
+						$('#progress_Modal').modal('hide');
+						if( parseInt(retObj.remain)  == 0 ) {
+							$('#save_draw_result span').removeClass('hidden');
+						}
+						var message = '抽取专家操作已完成';
+						$.ILBCJ.tipMessage(message);
+					}
+					return;
+				} else {
+					$("#progress_Modal").modal('hide');
+					var message = '抽取专家操作失败![' + retObj.message + ']';
 					$.ILBCJ.tipMessage(message, false);
 				}
 			}, 'json');

@@ -1,6 +1,10 @@
 package com.ilbcj.model;
 
 public class Choose {
+	public static final int STATUS_UNCONFIRM = 0;
+	public static final int STATUS_CONFIRM_YES = 1;
+	public static final int STATUS_CONFIRM_NO = 2;
+	
 	private int id;
 	private int status;
 	private int noticeWay;

@@ -20,6 +20,6 @@
 		<property name="admission" type="java.lang.String" length="32"/>
 		<property name="status" type="java.lang.Integer"/>
 		<property name="unitId" column="unit_id" type="java.lang.Integer"/>
-		
+		<property name="score" type="java.lang.Integer"/>
 	</class>
 </hibernate-mapping>

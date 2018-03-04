@@ -321,49 +321,124 @@
 		<!-- project_memo_modal -->
 		
 		<div class="modal modal-default fade" id="avoid_unit_modal" data-backdrop='static' tabindex="-1">
-		  <div class="modal-dialog modal-lg">
-	      <div class="modal-content">
-	         <div class="modal-header">
-	            <button type="button" class="close" data-dismiss="modal">&times;</button>
-	            <h4 class="modal-title">回避单位</h4>
-	         </div>
-	         <div class="modal-body">
-						<!-- form start -->
-						<form class="form">
-							<div class="form-group">
-              <label for="avoid_unit">单位名称</label>
-              <select id="avoid_unit" class="form-control" data-toggle="tooltip" data-original-title="请选择回避单位" data-placement="top">
+			<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">回避单位</h4>
+				</div>
+				<div class="modal-body">
+					<!-- form start -->
+					<form class="form">
+						<div class="form-group">
+							<label for="avoid_unit">单位名称</label>
+							<select id="avoid_unit" class="form-control" data-toggle="tooltip" data-original-title="请选择回避单位" data-placement="top">
 								<option value="0">请选择回避单位</option>
-      				</select>
-            </div>
+							</select>
+						</div>
 						<!-- /.row -->
-						<form class="form">
-							<div class="form-group">
-              <label for="avoid_reason">回避原因</label>
-              <select id="avoid_reason" class="form-control" data-toggle="tooltip" data-original-title="回避原因" data-placement="top">
+
+						<div class="form-group">
+							<label for="avoid_reason">回避原因</label>
+							<select id="avoid_reason" class="form-control" data-toggle="tooltip" data-original-title="回避原因" data-placement="top">
 								<option value="0">请选择回避原因</option>
 								<option value="建设单位">建设单位</option>
 								<option value="投标单位">投标单位</option>
-      				</select>
-            </div>
+								<option value="关联单位">关联单位</option>
+								<option value="其它">其它</option>
+							</select>
+						</div>
 						<!-- /.row -->
-						</form>
-	         </div>
-	         <!-- /.modal-body -->
-	         <div class="modal-footer">
-	            <div class="row">
-								<div class="col-xs-4 col-xs-offset-2">
-									<button type="button" id="avoid_unit_modal_confirm" class="btn btn-block btn-primary" data-dismiss="modal">确定</button>
-								</div>
-								<div class="col-xs-4">
-									<button type="buton" class="btn btn-block btn-default" data-dismiss="modal">取消</button>
-								</div>
-							</div>
-	         </div>
-	      </div><!-- /.modal-content -->
+					</form>
+				</div>
+				<!-- /.modal-body -->
+				<div class="modal-footer">
+				<div class="row">
+					<div class="col-xs-4 col-xs-offset-2">
+						<button type="button" id="avoid_unit_modal_confirm" class="btn btn-block btn-primary" data-dismiss="modal">确定</button>
+					</div>
+					<div class="col-xs-4">
+						<button type="buton" class="btn btn-block btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+				</div>
+			</div><!-- /.modal-content -->
 			</div><!-- /.modal -->
 		</div>
 		<!-- project_condition_modal -->
+		
+		<div class="modal modal-default fade" id="draw_modal" data-backdrop='static' tabindex="-1">
+			<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">评标专家抽签页</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-12">
+						<a class="btn btn-app" id="draw_expert_confirm">
+			                <i class="fa fa-users"></i> 抽取专家
+			            </a>
+			            <a class="btn btn-app">
+			                <i class="fa fa-volume-up"></i> 语音通知
+			            </a>
+			            <a class="btn btn-app">
+			                <i class="fa fa-commenting"></i> 短信通知
+			            </a>
+						<span class="pull-right">
+							<a class="btn btn-app" id="save_draw_result">
+								<span class="badge bg-green hidden">!</span>
+				                <i class="fa fa-edit"></i> 保存结果
+				            </a>
+				            <a class="btn btn-app" id="close_draw_modal">
+				                <i class="fa fa-power-off"></i> 关闭窗口
+				            </a>
+			            </span>
+			            </div>
+					</div>
+					<hr />
+					<!-- form start -->
+					<form class="form-horizontal">
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<label for="draw_project_name" class="col-sm-2 control-label">项目名称</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" id="draw_project_name" value="" disabled>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group">
+									<label for="draw_project_sn" class="col-sm-4 control-label">项目编号</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" id="draw_project_sn" value="" disabled>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-6">
+								<div class="form-group">
+									<label for="draw_expert_count" class="col-sm-4 control-label">抽取专家人数</label>
+									<div class="col-sm-8">
+										<input type="text" class="form-control" id="draw_expert_count" value="" disabled>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</form>
+				</div>
+				<!-- /.modal-body -->
+				<hr />
+				<div class="row">
+					<div class="col-xs-12">
+					<pre class="margin hidden" style="max-height:300px;" id="draw_expert_log"></pre>
+				</div>
+				</dir>
+			</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+		<!-- draw_modal -->
 		
 		<div class="modal modal-danger fade" id="project_confirm_modal" tabindex="-1">
 		   <div class="modal-dialog">
